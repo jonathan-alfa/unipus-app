@@ -12,11 +12,6 @@ const adminRoutes = require("./routes/admin.routes");
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
-
-const port = process.env.PORT;
-
 app.get("/health", async (req, res) => {
   try {
     const { rows } = await pool.query("SELECT NOW()");
@@ -26,6 +21,34 @@ app.get("/health", async (req, res) => {
   }
 });
 
+const allowedOrigin = process.env.FRONTEND_URL.split(",").map((origin) =>
+  origin.trim(),
+);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigin.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error(`Origin ${origin} tidak diizinkan cors`));
+    },
+    credentials: true,
+  }),
+);
+
+app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }));
+
+if (require.main === module) {
+  const PORT = process.env.PORT;
+  app.listen(PORT, () => {
+    console.log(`Server running at ${PORT}`);
+  });
+}
+
 app.use("/api/auth", authRoutes);
 app.use("/api", bookRoutes);
 app.use("/api/users", userRoutes);
@@ -34,9 +57,5 @@ app.use("/api/admin", adminRoutes);
 
 app.use((req, res) => res.status(404).json({ message: "Not Found" }));
 app.use(errorHandler);
-
-app.listen(port, () => {
-  console.log(`server running at port: ${port}`);
-});
 
 module.exports = app;
