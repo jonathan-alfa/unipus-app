@@ -18,6 +18,7 @@ export default {
       },
       fontFamily: {
         sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+        serif: ['Lora', 'Georgia', 'serif'],
       },
       boxShadow: {
         'soft': '0 4px 20px -2px rgba(0, 169, 255, 0.08)',

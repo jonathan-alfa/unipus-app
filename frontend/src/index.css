@@ -14,23 +14,13 @@
     scroll-behavior: smooth;
   }
 
+  html.font-scale-lg {
+    font-size: 109%;
+  }
+
   body {
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   }
-}
-
-@keyframes float3d {
-  0%, 100% {
-    transform: translateY(0px) rotateX(6deg) rotateY(-8deg);
-  }
-  50% {
-    transform: translateY(-14px) rotateX(-4deg) rotateY(8deg);
-  }
-}
-
-.logo-3d-float {
-  animation: float3d 6s ease-in-out infinite;
-  transform-style: preserve-3d;
 }
 
 @layer components {
