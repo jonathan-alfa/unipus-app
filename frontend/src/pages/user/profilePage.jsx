@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   User,
   IdCard,
@@ -19,7 +19,7 @@ export default function ProfilePage() {
   const { currentUser, users, updateProfile } = useAuth();
   const { showToast } = useToast();
 
-  const liveUser = users.find((u) => u.id === currentUser?.id) || currentUser;
+  const liveUser = currentUser;
   const reviewer = liveUser?.nim_reviewed_by
     ? users.find((u) => u.id === Number(liveUser.nim_reviewed_by))
     : null;
@@ -31,6 +31,17 @@ export default function ProfilePage() {
     currentPassword: '',
     newPassword: '',
   });
+
+  useEffect(() => {
+    if (liveUser) {
+      setFormData((prev) => ({
+        ...prev,
+        name: liveUser.name || '',
+        nim: liveUser.nim || '',
+        email: liveUser.email || '',
+      }));
+    }
+  }, [liveUser?.id, liveUser?.name, liveUser?.nim, liveUser?.email]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -138,7 +149,11 @@ export default function ProfilePage() {
             <div className="space-y-1.5 text-slate-600">
               <p>
                 <strong>Diverifikasi Oleh:</strong>{' '}
-                {reviewer ? reviewer.name : '-'}
+                {reviewer
+                  ? reviewer.name
+                  : liveUser?.nim_reviewed_at
+                  ? 'Petugas / Admin Perpustakaan'
+                  : '-'}
               </p>
               <p>
                 <strong>Waktu Verifikasi:</strong>{' '}
@@ -198,19 +213,22 @@ export default function ProfilePage() {
 
             <div>
               <label className="mb-1.5 block text-xs font-bold text-slate-700">
-                Alamat Email *
+                Alamat Email Terdaftar
               </label>
               <div className="relative">
                 <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                 <input
                   type="email"
                   name="email"
-                  required
+                  readOnly
+                  disabled
                   value={formData.email}
-                  onChange={handleChange}
-                  className="input-field pl-10"
+                  className="input-field cursor-not-allowed bg-slate-100 pl-10 text-slate-500"
                 />
               </div>
+              <p className="mt-1 text-[11px] text-slate-400">
+                Alamat email terikat pada akun anggota dan tidak dapat diubah.
+              </p>
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

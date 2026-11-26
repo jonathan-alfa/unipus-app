@@ -134,6 +134,8 @@ export default function ManageUsersPage() {
                 const userLoans = loans.filter((l) => l.user_id === user.id);
                 const activeCount = userLoans.filter(
                   (l) =>
+                    l.status === LOAN_STATUS.PENDING ||
+                    l.status === LOAN_STATUS.APPROVED ||
                     l.status === LOAN_STATUS.BORROWED ||
                     l.status === LOAN_STATUS.OVERDUE ||
                     l.status === LOAN_STATUS.RETURN_REQUESTED

@@ -594,7 +594,7 @@ export function LibraryProvider({ children }) {
 
       const now = new Date().toISOString();
       const todayDate = now.slice(0, 10);
-      const duration = Number(customDurationDays || settings.defaultLoanDurationDays || 7);
+      const duration = Number(durationDays || settings.defaultLoanDurationDays || 7);
       const dueDate = addDaysToDate(now, duration).slice(0, 10);
 
       setBooks((prev) =>

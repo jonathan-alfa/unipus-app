@@ -127,6 +127,11 @@ export default function MyLoansPage() {
                           <CheckCircle2 className="h-4 w-4" />
                           Pengajuan pengembalian telah dikirim. Menunggu verifikasi Admin perpustakaan.
                         </span>
+                      ) : loan.status === LOAN_STATUS.APPROVED ? (
+                        <span className="inline-flex items-center gap-1.5 font-semibold text-emerald-700">
+                          <CheckCircle2 className="h-4 w-4" />
+                          Pengajuan disetujui! Silakan ambil buku fisik di loket sirkulasi Perpustakaan UNIPMA.
+                        </span>
                       ) : isOverdue ? (
                         <span className="inline-flex items-center gap-1.5 font-bold text-rose-600">
                           <AlertTriangle className="h-4 w-4" />

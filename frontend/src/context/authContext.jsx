@@ -57,11 +57,20 @@ export function AuthProvider({ children }) {
       .get('/users/me')
       .then((res) => {
         if (res.data?.user) {
-          setCurrentUser(res.data.user);
+          const freshUser = res.data.user;
+          setCurrentUser(freshUser);
+          setUsers((prev) =>
+            prev.some((u) => u.id === freshUser.id)
+              ? prev.map((u) => (u.id === freshUser.id ? { ...u, ...freshUser } : u))
+              : [freshUser, ...prev]
+          );
         }
       })
-      .catch(() => {
-        // Keep cached user if backend is unreachable
+      .catch((err) => {
+        if (err.response?.status === 401 || err.response?.status === 403) {
+          localStorage.removeItem(TOKEN_STORAGE_KEY);
+          setCurrentUser(null);
+        }
       });
   }, []);
 
@@ -85,6 +94,13 @@ export function AuthProvider({ children }) {
         localStorage.setItem(TOKEN_STORAGE_KEY, token);
       }
       setCurrentUser(user);
+      if (user?.id) {
+        setUsers((prev) =>
+          prev.some((u) => u.id === user.id)
+            ? prev.map((u) => (u.id === user.id ? { ...u, ...user } : u))
+            : [user, ...prev]
+        );
+      }
       return { success: true, user };
     } catch (err) {
       // If Backend responded with 4xx/5xx error
@@ -141,6 +157,13 @@ export function AuthProvider({ children }) {
         localStorage.setItem(TOKEN_STORAGE_KEY, token);
       }
       setCurrentUser(user);
+      if (user?.id) {
+        setUsers((prev) =>
+          prev.some((u) => u.id === user.id)
+            ? prev.map((u) => (u.id === user.id ? { ...u, ...user } : u))
+            : [user, ...prev]
+        );
+      }
       return { success: true, user };
     } catch (err) {
       if (err.response) {

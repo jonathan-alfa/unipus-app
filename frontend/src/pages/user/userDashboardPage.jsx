@@ -20,12 +20,12 @@ import LoanDetailModal from '../../components/loans/loanDetailModal';
 import BookCard from '../../components/books/bookCard';
 
 export default function UserDashboardPage() {
-  const { currentUser, users } = useAuth();
+  const { currentUser } = useAuth();
   const { loans, books, requestBookReturn } = useLibrary();
   const { showToast } = useToast();
   const [selectedLoan, setSelectedLoan] = useState(null);
 
-  const liveUser = users.find((u) => u.id === currentUser?.id) || currentUser;
+  const liveUser = currentUser;
   const nimStatusInfo =
     NIM_STATUS_CONFIG[liveUser?.nim_status] || NIM_STATUS_CONFIG[NIM_STATUS.NONE];
 

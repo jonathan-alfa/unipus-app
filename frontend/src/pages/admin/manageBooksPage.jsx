@@ -129,8 +129,8 @@ export default function ManageBooksPage() {
       showToast('Format gambar harus berupa JPEG, PNG, WEBP, atau JPG.', 'error');
       return;
     }
-    if (file.size > 5 * 1024 * 1024) {
-      showToast('Ukuran gambar maksimal 5 MB.', 'error');
+    if (file.size > 4 * 1024 * 1024) {
+      showToast('Ukuran gambar maksimal 4 MB.', 'error');
       return;
     }
 
@@ -854,7 +854,7 @@ export default function ManageBooksPage() {
                           <span>
                             {formData.coverFile
                               ? `File Terpilih: ${formData.coverFile.name}`
-                              : 'Pilih File Gambar Cover (JPEG/PNG/WEBP, Maks 5MB)'}
+                              : 'Pilih File Gambar Cover (JPEG/PNG/WEBP, Maks 4MB)'}
                           </span>
                           <input
                             type="file"
